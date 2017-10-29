@@ -3,9 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-
     public static void main(String[] args) {
         try {
+            int lineNumber=0;
             List<char[]> inputLines = new ArrayList<char[]>();
             try
             {
@@ -31,10 +31,23 @@ public class Main {
             MicroDVD microDVD = new MicroDVD();
             try {
                 for (int i=0;i<inputLines.size()-500;i++) {
-                    microDVD.delay(inputLines.get(i), test, 1000, -60);
+                    lineNumber++;
+                    microDVD.delay(inputLines.get(i), test, 1000, 60);
                     System.out.println(test);
                   }
-            }catch (Exception e) {}
+            }catch (InvalidFramerate e) {
+                System.out.println("Line number: "+lineNumber);
+                System.exit(1);
+            }catch (InvalidFormatException e){
+                System.out.println("Line number: "+lineNumber);
+                System.exit(2);
+            }catch (NegativeFramesAfterShift e){
+                System.out.println("Line number: "+lineNumber);
+                System.exit(3);
+            }catch (TooLongOutput e) {
+                System.out.println("Line number: "+lineNumber);
+                System.exit(4);
+            }
             outputLines.add(test);
             try
             {

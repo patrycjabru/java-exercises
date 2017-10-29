@@ -5,5 +5,6 @@ public class InvalidFramerate extends Exception {
     }
     public InvalidFramerate(String m) {
         super(m);
+        System.out.println(m);
     }
 }

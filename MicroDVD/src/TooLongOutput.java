@@ -4,5 +4,6 @@ public class TooLongOutput extends Exception {
     }
     public TooLongOutput(String m) {
         super(m);
+        System.out.println(m);
     }
 }
