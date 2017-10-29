@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        int lineNumber=0;
         try {
-            int lineNumber=0;
             List<char[]> inputLines = new ArrayList<char[]>();
             try
             {
@@ -30,32 +30,59 @@ public class Main {
             char[] test=new char[2048];
             MicroDVD microDVD = new MicroDVD();
             try {
-                for (int i=0;i<inputLines.size()-500;i++) {
+                for (int i=0;i<inputLines.size();i++) {
                     lineNumber++;
-                    microDVD.delay(inputLines.get(i), test, 1000, 60);
+                    microDVD.delay(inputLines.get(i), test, 100, 60);
                     System.out.println(test);
+                    outputLines.add(test);
+                    System.out.println(outputLines.get(0));
                   }
+                  System.out.println(outputLines.size());
             }catch (InvalidFramerate e) {
                 System.out.println("Line number: "+lineNumber);
+                for (int i=0;i<inputLines.get(lineNumber-1).length;i++)
+                {
+                    System.out.print(inputLines.get(lineNumber-1)[i]);
+                }
                 System.exit(1);
             }catch (InvalidFormatException e){
                 System.out.println("Line number: "+lineNumber);
+                for (int i=0;i<inputLines.get(lineNumber-1).length;i++)
+                {
+                    System.out.print(inputLines.get(lineNumber-1)[i]);
+                }
                 System.exit(2);
             }catch (NegativeFramesAfterShift e){
                 System.out.println("Line number: "+lineNumber);
+                for (int i=0;i<inputLines.get(lineNumber-1).length;i++)
+                {
+                    System.out.print(inputLines.get(lineNumber-1)[i]);
+                }
                 System.exit(3);
             }catch (TooLongOutput e) {
                 System.out.println("Line number: "+lineNumber);
+                for (int i=0;i<inputLines.get(lineNumber-1).length;i++)
+                {
+                    System.out.print(inputLines.get(lineNumber-1)[i]);
+                }
                 System.exit(4);
+            }catch (Exception e) {
+                System.out.println("Unknown exception.");
+                System.out.println("Line number: "+lineNumber);
+                for (int i=0;i<inputLines.get(lineNumber-1).length;i++)
+                {
+                    System.out.print(inputLines.get(lineNumber-1)[i]);
+                }
+                System.exit(5);
             }
-            outputLines.add(test);
+
             try
             {
-                System.out.println("aaaaa");
                 BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(args[1]));
-                System.out.println("abbba");
-                for (int i=0;i<outputLines.size();i++) {
-                    bufferedWriter.write(outputLines.get(i));
+                System.out.println(outputLines.size());
+                for (int z=0;z<outputLines.size();z++) {
+                    System.out.println(outputLines.get(z));
+                    bufferedWriter.write(outputLines.get(z));
                     bufferedWriter.write("\n");
                 }
                 bufferedWriter.close();
@@ -65,6 +92,6 @@ public class Main {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } catch (Exception e) {}
+        } catch (Exception e) { }
     }
 }

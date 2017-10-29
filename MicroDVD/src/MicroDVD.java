@@ -20,7 +20,7 @@ public class MicroDVD {
             }
             if (recalculate){
                 for(int k=0;k<stringFrameNumber.length();k++) {
-                    if (stringFrameNumber.charAt(k)<48 || stringFrameNumber.charAt(k)>57) throw new InvalidFormatException("Framerate is not a number");
+                    if (stringFrameNumber.charAt(k)<48 || stringFrameNumber.charAt(k)>57) throw new InvalidFormatException("Frame is not a number");
                 }
                 integerFrameNumber=Integer.parseInt(stringFrameNumber);
                 System.out.println(integerFrameNumber);
