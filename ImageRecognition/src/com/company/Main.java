@@ -11,13 +11,22 @@ import java.util.*;
 //indicoio.config.api_key = "e4c28af263a4422e0a86c17f7220e3b9";
 
 public class Main {
-    public static File[] createDirList(String path) {
-        File dir = new File(path);
-        File[] directoryListing = dir.listFiles();
+    public static File[] createDirList(String path) throws Exception{
+        File[] directoryListing=null;
+        try {
+            File dir = new File(path);
+            if (!dir.exists()) throw new DirectoryDoesNotExist();
+            directoryListing = dir.listFiles();
+            for (int i = 0; i < directoryListing.length; i++) {
+                if (ImageIO.read(directoryListing[i]) == null) throw new FileIsNotAnImage();
+            }
+        }catch (Exception e) {
+            throw e;
+        }
         return directoryListing;
     }
 
-    public static List<Map<String, Double>> createRecognitionList (File[] directoryListing) {
+    public static List<Map<String, Double>> createRecognitionList (File[] directoryListing) throws Exception{
         List<Map<String, Double>> recognition = new ArrayList<>();
         try {
             Indico indico = new Indico("e4c28af263a4422e0a86c17f7220e3b9");
@@ -25,7 +34,11 @@ public class Main {
                 IndicoResult single = indico.imageRecognition.predict(directoryListing[i]);
                 recognition.add(single.getImageRecognition());
             }
-        } catch (Exception e){System.out.println("Something went wrong in function createRecognitionList");}
+        } catch (Exception e) {
+            throw e;
+//            System.out.println("Could not resolve host");
+//            System.out.println("Invalid api key");
+        }
         return recognition;
     }
     public static int[] calculateNumbersOfIndexes(File[] directoryListing, List<Map<String, Double>> recognition) {
@@ -102,9 +115,29 @@ public class Main {
     }
     public static void main(String[] args) throws Exception{
         try {
-
-            File[] directoryListing = createDirList("D:\\JAVA_PROJEKTY\\ImageRecognition\\foto");
-            List<Map<String, Double>> recognition=createRecognitionList(directoryListing);
+            File[] directoryListing=null;
+            try {
+                directoryListing = createDirList("D:\\JAVA_PROJEKTY\\ImageRecognition\\foto");
+            } catch (DirectoryDoesNotExist |FileIsNotAnImage e) {
+                System.exit(1);
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.exit(2);
+            }
+            List<Map<String, Double>> recognition=null;
+            try {
+                recognition = createRecognitionList(directoryListing);
+            } catch (java.net.UnknownHostException e) {
+                System.out.println("Could not resolve host");
+                System.exit(3);
+            } catch (io.indico.api.utils.IndicoException e) {
+                System.out.println("invalid api key");
+                System.exit(4);
+            } catch (Exception e) {
+                System.out.println("Something went wrong in function createRecognitionList");
+                e.printStackTrace();
+                System.exit(5);
+            }
             int indexOfMaxValues[]= calculateNumbersOfIndexes(directoryListing,recognition);
             String[] namesForAllPictures=calculateNames(indexOfMaxValues,recognition);
             createDirectories(namesForAllPictures);
@@ -114,4 +147,5 @@ public class Main {
         }
     }
 }
+
 
