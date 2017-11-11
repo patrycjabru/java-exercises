@@ -46,7 +46,7 @@ public class GUI extends Application {
         }
         return output;
     }
-    public static void findGreatestValues(Map<String, Double> recognition, double[] maxValues, String[] names) {
+    public void findGreatestValues(Map<String, Double> recognition) {
         for (int i = 0; i < maxValues.length; i++) {
             for (int j = 0; j < recognition.size(); j++) {
                 Iterator it = recognition.values().iterator();
@@ -58,11 +58,15 @@ public class GUI extends Application {
                 String maxName= "";
                 while (it.hasNext()) {
                     double element = (double) it.next();
-                    name =nameIterator.next().toString();
+                    name = nameIterator.next().toString();
                     if (element > max) {
                         for (int z=0;z<i;z++) {
-                            if (names[z].equals(removeWordsAfterComma(maxName)))
-                                doSave=false;
+                            System.out.println("abbbaaa");
+                            if (names[z].equals(removeWordsAfterComma(maxName))) {
+                                doSave = false;
+                                System.out.println("aaaa");
+                            }
+
                         }
                         if (doSave) {
                             max = element;
@@ -72,7 +76,7 @@ public class GUI extends Application {
                     doSave=true;
                 }
                 it.remove();
-                nameIterator.remove();
+//                nameIterator.remove();
                 System.out.println(max);
                 maxValues[i] = max;
                 maxName=removeWordsAfterComma(maxName);
@@ -153,7 +157,7 @@ public class GUI extends Application {
                         }
 
                         System.out.println("test");
-                        findGreatestValues(recognition,maxValues,names);
+                        findGreatestValues(recognition);
                         System.out.println(maxValues[0]);
                         System.out.println(names[0]);
 
@@ -169,9 +173,9 @@ public class GUI extends Application {
 //        primaryStage.show();
             }
         });
-        borderPane.setRight(btn);
+        borderPane.setTop(btn);
         borderPane.setLeft(listView);
-        borderPane.setBottom(myImageView);
+        borderPane.setRight(myImageView);
 //        pieChart = FXCollections.observableArrayList(
 //                new PieChart.Data(names[0],maxValues[0]), new PieChart.Data(names[1],maxValues[1])
 //        );
